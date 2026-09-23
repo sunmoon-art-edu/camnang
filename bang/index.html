@@ -45,6 +45,14 @@ input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--sun-
 .err{color:var(--verm);font-size:.9rem;min-height:1.3em;margin:.4rem 0}
 .note{font-size:.88rem;color:var(--ink-2);margin:.9rem 0 0}
 kbd{font:inherit;font-weight:600;background:var(--sun-wash);border-radius:5px;padding:0 .3em}
+.duyet{border:1px solid var(--line-2);border-left:4px solid var(--ok);border-radius:12px;padding:.9rem 1rem;background:var(--paper);margin:.2rem 0 1rem}
+.duyet h3{margin:0 0 .5rem;font-size:1rem}
+.duyet .row{border-top:1px solid var(--line);padding:.6rem 0}
+.duyet .row:first-of-type{border-top:0}
+.duyet .row b{display:block}
+.duyet .row span{font-size:.86rem;color:var(--ink-2)}
+.duyet button{margin-top:.45rem;padding:.5rem 1.1rem;border-radius:999px;border:1px solid var(--ok);background:var(--ok);color:#fff;font:inherit;font-weight:700;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.duyet .ok{color:var(--ok);font-weight:600}
 footer{margin-top:2rem;font-size:.8rem;color:var(--ink-3);text-align:center}
 [hidden]{display:none!important}
 </style>
@@ -66,6 +74,7 @@ footer{margin-top:2rem;font-size:.8rem;color:var(--ink-3);text-align:center}
 <div id="bang" hidden>
   <div class="who"><span class="chip" id="ten"></span><button class="link" id="ra">Đổi người dùng</button></div>
   <div id="ds"></div>
+  <div class="duyet" id="dy" hidden><h3>Hồ sơ quản lý chờ duyệt</h3><div id="dyds"></div></div>
   <h2>Cài ra màn hình chính</h2>
   <div class="box"><p class="t">iPhone (Safari)</p>
   <ol><li>Mở trang này bằng <b>Safari</b></li><li>Bấm <kbd>Chia sẻ</kbd> ở thanh dưới</li><li>Chọn <kbd>Thêm vào MH chính</kbd></li><li>Bấm <kbd>Thêm</kbd></li></ol></div>
@@ -100,6 +109,29 @@ function ve(u){
     return '<a class="lk" href="'+l.u+'" target="_blank" rel="noopener"><span class="sc">'+l.g+'</span><b>'+esc(l.n)+'</b><span class="d">'+esc(l.d)+'</span></a>';
   }).join('');
 }
+function taiCho(u){
+  if(!u.quanTri||!u.ma){return}
+  api('cho=1&ma='+encodeURIComponent(u.ma),function(r){
+    var box=$('#dy'),ds=$('#dyds');
+    if(!r||!r.ok||!r.ds||!r.ds.length){box.hidden=true;return}
+    box.hidden=false;
+    ds.innerHTML=r.ds.map(function(x,i){
+      return '<div class="row" id="dy'+i+'"><b>'+esc(x.name)+'</b><span>'+esc(x.so)+' · '+esc(x.email)+(x.sdt?' · '+esc(x.sdt):'')+'</span>'+
+        (x.thuMuc?'<span><a href="'+esc(x.thuMuc)+'" target="_blank" rel="noopener">Xem giấy tờ</a>'+(x.pdf?' · <a href="'+esc(x.pdf)+'" target="_blank" rel="noopener">Thỏa thuận đã ký</a>':'')+'</span>':'')+
+        '<button type="button" data-d="'+esc(x.email)+'" data-i="'+i+'">Duyệt</button></div>';
+    }).join('');
+    ds.querySelectorAll('[data-d]').forEach(function(b){
+      b.onclick=function(){
+        b.disabled=true;b.textContent='Đang duyệt…';
+        api('duyetnhanh='+encodeURIComponent(b.dataset.d)+'&ma='+encodeURIComponent(u.ma),function(k){
+          var row=$('#dy'+b.dataset.i);
+          if(k&&k.ok){row.innerHTML='<b>'+esc(k.name||'')+'</b><span class="ok">Đã duyệt · mã đăng nhập đã gửi về email của bạn ấy</span>';}
+          else{b.disabled=false;b.textContent='Duyệt';alert((k&&k.error)||'Chưa duyệt được, thử lại.');}
+        });
+      };
+    });
+  });
+}
 function vao(){
   var e=$('#e').value.trim().toLowerCase(),m=$('#m').value.trim(),er=$('#er');
   if(!m){er.textContent='Nhập mã đăng nhập.';return}
@@ -108,7 +140,7 @@ function vao(){
   api('login='+encodeURIComponent(e)+'&ma='+encodeURIComponent(m),function(r){
     if(!r){er.textContent='Chưa kết nối được. Kiểm tra mạng rồi thử lại.';return}
     if(!r.ok){er.textContent=r.error||'Sai email hoặc mã.';return}
-    var u={role:r.role,name:r.name||'',email:e};luu(u);er.textContent='';ve(u);
+    var u={role:r.role,name:r.name||'',email:e,quanTri:!!r.quanTri,ma:r.quanTri?m:''};luu(u);er.textContent='';ve(u);taiCho(u);
   });
 }
 $('#ok').onclick=vao;
@@ -122,7 +154,7 @@ $('#quen').onclick=function(){
   });
 };
 $('#ra').onclick=function(){try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
-(function(){var u=doc();if(u&&u.role){ve(u);var em=doc().email;if(em)$('#e').value=em}})();
+(function(){var u=doc();if(u&&u.role){ve(u);taiCho(u);var em=doc().email;if(em)$('#e').value=em}})();
 </script>
 </body>
 </html>
