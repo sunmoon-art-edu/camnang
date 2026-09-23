@@ -20,11 +20,14 @@
 *{box-sizing:border-box}
 body{margin:0;padding:1.5rem 1.1rem calc(2.5rem + env(safe-area-inset-bottom));background:radial-gradient(90% 40% at 50% 0%,var(--sun-wash),transparent 70%),var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
 .wrap{width:min(38rem,100%);margin:0 auto}
-header{display:flex;align-items:center;gap:.8rem;margin-bottom:1.3rem}
+header{display:flex;align-items:center;gap:.8rem;margin-bottom:1.1rem}
 header img{width:46px;height:auto}
 header b{display:block;font-family:var(--serif);font-weight:500;font-size:1.35rem;line-height:1.15}
 header span{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
-.lk{display:grid;grid-template-columns:2.6rem 1fr;align-items:center;gap:.2rem .9rem;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--line-2);border-radius:12px;padding:.9rem 1rem;margin-bottom:.7rem;position:relative}
+.who{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin:-.4rem 0 1rem}
+.chip{display:inline-flex;align-items:center;padding:.28rem .7rem;border-radius:999px;font-size:.78rem;font-weight:600;background:var(--ok-wash);color:var(--ok)}
+.link{border:0;background:none;color:var(--ink-2);text-decoration:underline;font:inherit;font-size:.85rem;cursor:pointer;padding:0}
+.lk{display:grid;grid-template-columns:2.6rem 1fr;align-items:center;gap:.2rem .9rem;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--line-2);border-radius:12px;padding:.9rem 2rem .9rem 1rem;margin-bottom:.7rem;position:relative}
 .lk:active{background:var(--paper-2)}
 .lk .sc{grid-row:span 2;font-family:var(--sc);font-size:1.7rem;color:var(--verm);text-align:center;line-height:1}
 .lk b{font-size:1.02rem}
@@ -34,31 +37,92 @@ h2{font-family:var(--serif);font-weight:500;font-size:1.25rem;margin:2rem 0 .6re
 .box{border:1px solid var(--line-2);border-radius:12px;padding:.9rem 1rem;background:var(--paper)}
 .box+.box{margin-top:.7rem}
 .box p.t{margin:0 0 .5rem;font-weight:700}
-ol{margin:0;padding-left:1.2rem}
-ol li{margin:.25rem 0}
+ol{margin:0;padding-left:1.2rem}ol li{margin:.25rem 0}
+label{display:grid;gap:.3rem;font-size:.9rem;font-weight:600;margin-bottom:.7rem}
+input{font:inherit;padding:.75rem .9rem;border:1px solid var(--line-2);border-radius:10px;background:var(--paper);color:var(--ink);width:100%}
+input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--sun-wash)}
+.btn{display:inline-flex;align-items:center;justify-content:center;width:100%;padding:.85rem 1.2rem;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:inherit;font-weight:700;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.err{color:var(--verm);font-size:.9rem;min-height:1.3em;margin:.4rem 0}
 .note{font-size:.88rem;color:var(--ink-2);margin:.9rem 0 0}
 kbd{font:inherit;font-weight:600;background:var(--sun-wash);border-radius:5px;padding:0 .3em}
 footer{margin-top:2rem;font-size:.8rem;color:var(--ink-3);text-align:center}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><img src="icon.png" alt=""><div><b>Bảng điều khiển</b><span>Quản lý SunMoon</span></div></header>
-<a class="lk" href="https://chinesekidsvn.com/camnang/" target="_blank" rel="noopener"><span class="sc">日月</span><b>Cẩm nang quản lý</b><span class="d">Nội quy, nghiệp vụ, mục Quản lý</span></a>
-<a class="lk" href="https://script.google.com/macros/s/AKfycbzcqoHdsWUcwVkGZimpB-zN5PHvtn3HW1YAc5lGTqdTYhKunKvibm136KhqSFF2O8eKaA/exec" target="_blank" rel="noopener"><span class="sc">时</span><b>Lịch toàn năng</b><span class="d">Lịch lớp, điểm danh, học phí, chấm công</span></a>
-<a class="lk" href="https://chinesekidsvn.com/lop-hoc.html" target="_blank" rel="noopener"><span class="sc">课</span><b>Website lớp học</b><span class="d">Link gửi khách tham khảo các lớp</span></a>
-<a class="lk" href="https://chinesekidsvn.com/lien-he.html#trial" target="_blank" rel="noopener"><span class="sc">约</span><b>Đăng ký học thử</b><span class="d">Form khách đăng ký lịch</span></a>
-<a class="lk" href="https://drive.google.com/drive/folders/1oy46U6-ZLR07dZjRtZ0Y3BfUT8bB7O0u" target="_blank" rel="noopener"><span class="sc">书</span><b>Giáo trình 2023</b><span class="d">Kho giáo trình trên Drive</span></a>
-<a class="lk" href="https://docs.google.com/spreadsheets/d/1hobeFRMvW1RVvve35uu9-qVfjg1wnI-SIzaPVa7gd0Q/edit" target="_blank" rel="noopener"><span class="sc">片</span><b>PPT YCT 4–6</b><span class="d">Bảng link bài giảng</span></a>
+<header><img src="icon.png" alt=""><div><b>Bảng điều khiển</b><span id="vai">SunMoon Art &amp; Education</span></div></header>
 
-<h2>Cài ra màn hình chính</h2>
-<div class="box"><p class="t">iPhone (Safari)</p>
-<ol><li>Mở trang này bằng <b>Safari</b></li><li>Bấm nút <kbd>Chia sẻ</kbd> ở thanh dưới</li><li>Chọn <kbd>Thêm vào MH chính</kbd></li><li>Bấm <kbd>Thêm</kbd></li></ol></div>
-<div class="box"><p class="t">Android (Chrome)</p>
-<ol><li>Mở trang này bằng <b>Chrome</b></li><li>Bấm <kbd>⋮</kbd> góc trên bên phải</li><li>Chọn <kbd>Thêm vào màn hình chính</kbd></li><li>Bấm <kbd>Thêm</kbd></li></ol></div>
-<p class="note">Xong sẽ có biểu tượng <b>SunMoon</b> ngoài màn hình, bấm là vào thẳng bảng này.</p>
-<p class="note">Cẩm nang và Lịch toàn năng đăng nhập bằng <b>email + mã 4 số</b> của bạn. Không đưa mã cho ai.</p>
+<div id="dn">
+  <p class="note" style="margin-top:0">Đăng nhập bằng <b>email + mã 4 số</b> của bạn để hiện đúng phần việc của mình.</p>
+  <label>Email<input id="e" type="email" autocomplete="email" inputmode="email"></label>
+  <label>Mã đăng nhập<input id="m" type="password" inputmode="numeric" autocomplete="current-password"></label>
+  <p class="err" id="er"></p>
+  <button class="btn" id="ok" type="button">Vào bảng</button>
+  <p class="note"><button class="link" id="quen">Quên mã? Gửi mã về email</button></p>
+  <p class="note">Chưa có mã: khai hồ sơ và ký thỏa thuận ở <a href="https://chinesekidsvn.com/camnang/">cẩm nang</a>.<br>Quản trị: để trống email, nhập mã quản trị.</p>
+</div>
+
+<div id="bang" hidden>
+  <div class="who"><span class="chip" id="ten"></span><button class="link" id="ra">Đổi người dùng</button></div>
+  <div id="ds"></div>
+  <h2>Cài ra màn hình chính</h2>
+  <div class="box"><p class="t">iPhone (Safari)</p>
+  <ol><li>Mở trang này bằng <b>Safari</b></li><li>Bấm <kbd>Chia sẻ</kbd> ở thanh dưới</li><li>Chọn <kbd>Thêm vào MH chính</kbd></li><li>Bấm <kbd>Thêm</kbd></li></ol></div>
+  <div class="box"><p class="t">Android (Chrome)</p>
+  <ol><li>Mở trang này bằng <b>Chrome</b></li><li>Bấm <kbd>⋮</kbd> góc trên bên phải</li><li>Chọn <kbd>Thêm vào màn hình chính</kbd></li><li>Bấm <kbd>Thêm</kbd></li></ol></div>
+  <p class="note">Xong sẽ có biểu tượng <b>SunMoon</b> ngoài màn hình, bấm là vào thẳng bảng này. Máy này nhớ đăng nhập, không phải nhập mã lại.</p>
+  <p class="note">Mã là của riêng bạn, không đưa cho ai.</p>
+</div>
+
 <footer>SunMoon Art &amp; Education</footer>
 </div>
+<script>
+var HS='https://script.google.com/macros/s/AKfycbxCR1U2vpFbnz_ppm-1mUNFXKfc784D1DGWNlCJlpxBcPL2aG3fQxCB4we-M76F1zUizw/exec';
+var LINKS=[{"r": "all", "n": "Cẩm nang của bạn", "u": "https://chinesekidsvn.com/camnang/", "d": "Nội quy, nghiệp vụ, tra cứu nhanh", "g": "日月"}, {"r": "all", "n": "Lịch toàn năng", "u": "https://script.google.com/macros/s/AKfycbzcqoHdsWUcwVkGZimpB-zN5PHvtn3HW1YAc5lGTqdTYhKunKvibm136KhqSFF2O8eKaA/exec", "d": "Lịch lớp, điểm danh, chấm công", "g": "时"}, {"r": "gv,tg", "n": "Checklist ca dạy", "u": "https://chinesekidsvn.com/camnang/#p1", "d": "Trước · trong · sau giờ học", "g": "单"}, {"r": "gv,ql", "n": "PPT YCT 4–6", "u": "https://docs.google.com/spreadsheets/d/1hobeFRMvW1RVvve35uu9-qVfjg1wnI-SIzaPVa7gd0Q/edit", "d": "Bảng link bài giảng", "g": "片"}, {"r": "all", "n": "Giáo trình 2023", "u": "https://drive.google.com/drive/folders/1oy46U6-ZLR07dZjRtZ0Y3BfUT8bB7O0u", "d": "Kho giáo trình trên Drive", "g": "书"}, {"r": "ql", "n": "Mục Quản lý", "u": "https://chinesekidsvn.com/camnang/#muc-ql", "d": "Nhận nhân viên, tiền, sự cố, sale", "g": "管"}, {"r": "ql", "n": "Website lớp học", "u": "https://chinesekidsvn.com/lop-hoc.html", "d": "Link gửi khách tham khảo", "g": "课"}, {"r": "ql", "n": "Đăng ký học thử", "u": "https://chinesekidsvn.com/lien-he.html#trial", "d": "Form khách đăng ký lịch", "g": "约"}];
+var TEN={gv:'Giáo viên',tg:'Trợ giảng',ql:'Quản lý'};
+var KEY='sm_bang';
+var $=function(q){return document.querySelector(q)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function api(qs,cb){
+  var n='__cb'+Date.now()+Math.floor(Math.random()*1e3),s=document.createElement('script'),done=0;
+  window[n]=function(r){done=1;delete window[n];s.remove();cb(r)};
+  s.onerror=function(){if(!done){delete window[n];s.remove();cb(null)}};
+  s.src=HS+'?'+qs+'&cb='+n+'&t='+Date.now();document.head.appendChild(s);
+}
+function luu(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function doc(){try{return JSON.parse(localStorage.getItem(KEY))||null}catch(e){return null}}
+function ve(u){
+  $('#dn').hidden=true;$('#bang').hidden=false;
+  $('#vai').textContent=TEN[u.role]||'SunMoon';
+  $('#ten').textContent=(u.name?u.name+' · ':'')+(TEN[u.role]||'');
+  $('#ds').innerHTML=LINKS.filter(function(l){return l.r==='all'||l.r.split(',').indexOf(u.role)>=0}).map(function(l){
+    return '<a class="lk" href="'+l.u+'" target="_blank" rel="noopener"><span class="sc">'+l.g+'</span><b>'+esc(l.n)+'</b><span class="d">'+esc(l.d)+'</span></a>';
+  }).join('');
+}
+function vao(){
+  var e=$('#e').value.trim().toLowerCase(),m=$('#m').value.trim(),er=$('#er');
+  if(!m){er.textContent='Nhập mã đăng nhập.';return}
+  if(e&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='Email chưa đúng định dạng.';return}
+  er.textContent='Đang kiểm tra…';
+  api('login='+encodeURIComponent(e)+'&ma='+encodeURIComponent(m),function(r){
+    if(!r){er.textContent='Chưa kết nối được. Kiểm tra mạng rồi thử lại.';return}
+    if(!r.ok){er.textContent=r.error||'Sai email hoặc mã.';return}
+    var u={role:r.role,name:r.name||'',email:e};luu(u);er.textContent='';ve(u);
+  });
+}
+$('#ok').onclick=vao;
+$('#m').onkeydown=function(ev){if(ev.key==='Enter')vao()};
+$('#quen').onclick=function(){
+  var e=$('#e').value.trim().toLowerCase(),er=$('#er');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='Nhập email đã khai trong hồ sơ trước.';return}
+  er.textContent='Đang gửi…';
+  api('resend='+encodeURIComponent(e),function(r){
+    er.textContent=!r?'Chưa kết nối được. Thử lại sau.':(r.sent?'Đã gửi mã về '+e+'. Xem cả mục Spam.':(r.error||'Chưa gửi được mã.'));
+  });
+};
+$('#ra').onclick=function(){try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
+(function(){var u=doc();if(u&&u.role){ve(u);var em=doc().email;if(em)$('#e').value=em}})();
+</script>
 </body>
 </html>
